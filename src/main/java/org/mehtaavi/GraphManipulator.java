@@ -72,7 +72,19 @@ public class GraphManipulator {
         g.add(mutNode(srcLabel).addLink(dstLabel));
     }
 
+    // Feature 4: Output the imported graph into a DOT file or graphics
 
+    public static void outputDOTGraph(String filename) throws IOException {
+        String pref = "/Users/avimehta/Desktop/Fall 23/CSE 464 SQAT/Project/CSE-464-2023-amehta65/src/main/resources/";
+        Graphviz.fromGraph(g).render(Format.DOT).toFile(new File(pref+filename));
+    }
+
+    public static void outputGraphics(String filePath) throws IOException {
+        String pref = "/Users/avimehta/Desktop/Fall 23/CSE 464 SQAT/Project/CSE-464-2023-amehta65/src/main/resources/";
+        InputStream dot = new FileInputStream(filePath);
+        g = new Parser().read(dot);
+        Graphviz.fromGraph(g).width(700).render(Format.PNG).toFile(new File(pref+"feature1.png"));
+    }
 
     public static void addNodes(String[] labels) {
         for (String label : labels) {
