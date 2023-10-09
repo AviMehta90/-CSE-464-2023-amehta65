@@ -66,6 +66,14 @@ public class GraphManipulator {
         }
     }
 
+    // Feature 3: Adding edges from the imported graph
+
+    public static void addEdge(String srcLabel, String dstLabel){
+        g.add(mutNode(srcLabel).addLink(dstLabel));
+    }
+
+
+
     public static void addNodes(String[] labels) {
         for (String label : labels) {
             addNode(label);
