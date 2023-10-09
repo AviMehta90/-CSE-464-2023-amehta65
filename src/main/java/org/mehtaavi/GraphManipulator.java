@@ -58,6 +58,21 @@ public class GraphManipulator {
         System.out.println(g);
     }
 
+    // Feature 2: Adding nodes from the imported graph
+
+    public static void addNode(String label) {
+        if(!getNodeLabels().contains(label)){
+            g.nodes().add(mutNode(label));
+        }
+    }
+
+    public static void addNodes(String[] labels) {
+        for (String label : labels) {
+            addNode(label);
+        }
+    }
+
+
 
     public static void main(String[] args) {
 
