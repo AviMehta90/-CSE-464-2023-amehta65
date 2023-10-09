@@ -66,6 +66,12 @@ public class GraphManipulator {
         }
     }
 
+    public static void addNodes(String[] labels) {
+        for (String label : labels) {
+            addNode(label);
+        }
+    }
+
     // Feature 3: Adding edges from the imported graph
 
     public static void addEdge(String srcLabel, String dstLabel){
@@ -85,14 +91,6 @@ public class GraphManipulator {
         g = new Parser().read(dot);
         Graphviz.fromGraph(g).width(700).render(Format.PNG).toFile(new File(pref+"feature1.png"));
     }
-
-    public static void addNodes(String[] labels) {
-        for (String label : labels) {
-            addNode(label);
-        }
-    }
-
-
 
     public static void main(String[] args) {
 
