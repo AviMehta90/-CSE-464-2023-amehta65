@@ -170,5 +170,12 @@ The project's source code is organized as follows:
 - `src/main/resources`: Place your DOT files here and specify the output directory for graphics.
 
 ### Commit Links
-
+1. [First Commit](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/77fd7c4e6149defa7fdd8442712f1af9b1000bf8)
+2. [First Feature Added](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/35312ce12fba171d711c92cc22cd31964deb1585)
+3. [Second Feature Added](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/1e70a3a696c06c74c99d12cb7671f061f0d48229)
+4. [Third Feature Added](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/dc4d21d1a18d73dd2479f9f47298cfcb5b557d60)
+5. [Fourth Feature Added](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/ee982ac86ffc866294c204f5efae84bd8e9f7f04)
+6. [Deleted 'example' directory](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/e68cced851dc420aab9b1c585ead665c24f2ced0)
+7. [code formatted](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/7fae8289b50194dfa9a8f63cf4f826aa6782ca26)
+8. [Final Upload](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/3fc60dcaeb8540cd3af3533acb8b13d656fb7793)
 
