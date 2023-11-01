@@ -1,4 +1,4 @@
-digraph "G" {
+digraph "Graph1" {
     "a" -> "b"
     "b" -> "c"
     "c" -> "a"

@@ -1,4 +1,4 @@
-Number of Nodes: 6
-Nodes: [a, b, c, d, e, f]
-Number of Edges: 6
-Edges: [b -> c, c -> a, a -> d, f -> a, a -> b, e -> c]
+Number of Nodes: 3
+Nodes: [a, b, c]
+Number of Edges: 3
+Edges: [b -> c, c -> a, a -> b]

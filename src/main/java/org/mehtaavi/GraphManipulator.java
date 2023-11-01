@@ -12,14 +12,15 @@ import static guru.nidi.graphviz.model.Factory.mutNode;
 
 public class GraphManipulator {
 
-    private static MutableGraph g;
+    private MutableGraph g;
+    Set<String> nodeSet = new HashSet<>();
+    Set<String> edgeSet = new HashSet<>();
     public GraphManipulator() {
         g = mutGraph("example").setDirected(true);
     }
 
     // Feature 1: Parse a DOT graph file to create a graph
-
-    public void parseGraph(String filePath) throws IOException {
+    public void parseGraph(String filePath) {
         try {
             InputStream dot = new FileInputStream(filePath);
             g = new Parser().read(dot);
@@ -30,53 +31,37 @@ public class GraphManipulator {
         }
     }
 
-    private final HashSet<String> nodeSet = new HashSet<>();
-    public int getNumberOfNodes() {
-        for (MutableNode node: g.nodes()){
-            String name = node.toString();
-            String nodeName = name.substring(0, name.indexOf("{"));
-            nodeSet.add(nodeName);
-        }
-        return nodeSet.size();
-    }
-
     public Set<String> getNodeLabels() {
-        Set<String> labels = new HashSet<>();
         if (g != null){
-            for (MutableNode node : g.nodes()) {
-                if (nodeSet.contains(node.name().toString())){
-                    labels.add(node.name().toString());
-                    nodeSet.add(node.name().toString());
-                }
+            for (MutableNode node: g.nodes()){
+                String name = node.toString();
+                String nodeName = name.substring(0, name.indexOf("{"));
+                nodeSet.add(nodeName);
             }
         }
-        return labels;
-    }
-
-    public int getNumberOfEdges() {
-        return g.edges().size();
+        return nodeSet;
     }
 
     public Set<String> getEdgeInfo() {
-        Set<String> edgeInfo = new HashSet<>();
         if (g != null){
-            for (var edge : g.edges()) {
+            for (Link edge : g.edges()) {
                 assert edge.from() != null;
                 String ef = edge.from().toString();
-                edgeInfo.add(ef.substring(0, ef.indexOf("{")) + " -> " + ef.substring(ef.indexOf(">")+1, ef.indexOf(":")));
+                String tempEdge = ef.substring(0, ef.indexOf("{")) + " -> " + ef.substring(ef.indexOf(">")+1, ef.indexOf(":"));
+                edgeSet.add(tempEdge);
             }
         }
-        return edgeInfo;
+        return edgeSet;
     }
 
     public String toGraphString() {
-        return "Number of Nodes: " + getNumberOfNodes() +
-                "\nNodes: " + getNodeLabels() +
-                "\nNumber of Edges: " + getNumberOfEdges() +
-                "\nEdges: " + getEdgeInfo();
+        return "Number of Nodes: " + nodeSet.size() +
+                "\nNodes: " + nodeSet +
+                "\nNumber of Edges: " + edgeSet.size() +
+                "\nEdges: " + edgeSet;
     }
 
-    public String outputGraph(String filePath) throws IOException {
+    public String outputGraph(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(toGraphString());
         } catch (IOException e) {
@@ -87,36 +72,97 @@ public class GraphManipulator {
     }
 
     // Feature 2: Adding nodes from the imported graph
-
     public boolean addNode(String label) {
-        if(!getNodeLabels().contains(label)){
-            g.nodes().add(mutNode(label));
+        if (nodeSet.add(label)) {
+            g.add(mutNode(label));
+            return true;
         }
-        else {
-            System.out.println("Node already in graph");
-            return false;
-        }
-        return true;
-    }
-
-    public boolean addNodes(String[] labels) {
-        System.out.println("Adding nodes: "+ Arrays.toString(labels));
-        for (String label : labels) {
-            return addNode(label);
-        }
+        System.out.println("Node already in graph");
         return false;
     }
 
-    // Feature 3: Adding edges from the imported graph
-
-    public boolean addEdge(String srcLabel, String dstLabel){
-        g.add(mutNode(srcLabel).addLink(dstLabel));
-        System.out.println("Edge created: "+ srcLabel+ " -> "+ dstLabel);
-        return true;
+    public boolean addNodes(String[] labels) {
+        boolean allAdded = true;
+        for (String label : labels) {
+            if (!addNode(label)) {
+                allAdded = false;
+            }
+        }
+        return allAdded;
     }
 
-    // Feature 4: Output the imported graph into a DOT file or graphics
+    public boolean removeNode(String label) {
+        if (nodeSet.remove(label)) {
+            g.nodes().remove(mutNode(label));
+            System.out.println("Node " + label + " removed.");
+            return true;
+        }
+        System.out.println("Node " + label + " not found.");
+        return false;
+    }
 
+    public boolean removeNodes(String[] labels) {
+        boolean allRemoved = true;
+        for (String label : labels) {
+            if (!removeNode(label)) {
+                allRemoved = false;
+            }
+        }
+        return allRemoved;
+    }
+
+
+    public boolean addEdge(String srcLabel, String dstLabel) {
+        String edgeKey = srcLabel + "->" + dstLabel;
+        if (edgeSet.add(edgeKey)) {
+            g.add(mutNode(srcLabel).addLink(dstLabel));
+            System.out.println("Edge created: " + srcLabel + " -> " + dstLabel);
+            return true;
+        }
+        System.out.println("Edge already in graph");
+        return false;
+    }
+
+    private MutableNode findNode(String label) {
+        for (MutableNode node : g.nodes()) {
+            if (node.name().toString().equals(label)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    public boolean removeEdge(String srcLabel, String dstLabel) {
+        String edgeKey = srcLabel + "->" + dstLabel;
+        if (!edgeSet.remove(edgeKey)) {
+            System.out.println("Edge " + srcLabel + " -> " + dstLabel + " not found.");
+            return false;
+        }
+        MutableNode srcNode = findNode(srcLabel);
+        if (srcNode == null) {
+            System.out.println("Source node not found.");
+            return false;
+        }
+        Link targetLink = null;
+        for (Link link : srcNode.links()) {
+            String actualDst = link.to().toString().replace(":", "");
+            if (actualDst.equals(dstLabel)) {
+                targetLink = link;
+                break;
+            }
+        }
+        if (targetLink != null) {
+            srcNode.links().remove(targetLink);
+            System.out.println("Edge " + srcLabel + " -> " + dstLabel + " removed.");
+            return true;
+        } else {
+            System.out.println("Link not found in source node links.");
+            return false;
+        }
+    }
+
+
+    // Feature 4: Output the imported graph into a DOT file or graphics
     public MutableGraph outputDOTGraph(String filename) throws Exception {
         try {
             String pref = "src/main/resources/actualOutputs";
@@ -139,44 +185,4 @@ public class GraphManipulator {
         return g != null;
     }
 
-//    public static void main(String[] args) throws IOException {
-//        String dotFilePath = "src/main/resources/test1.dot";
-//
-//        try {
-//            // Feature 1: Parse a DOT Graph File
-//            System.out.println("Feature 1: Parsing DOT Graph File");
-//            parseGraph(dotFilePath);
-//            System.out.println("\nDot File looks like: ");
-//            System.out.println(g.toString());
-//            System.out.println(toGraphString());
-//            outputGraph("src/main/resources/expected.txt");
-//
-//            // Feature 2: Adding Nodes
-//            System.out.println("\nFeature 2: Adding Node(s): d, e, f");
-//            boolean nodeAdded = addNodes(new String[]{"d", "e", "f"});
-//            System.out.println("New node(s) added: " + nodeAdded);
-//
-//            // Feature 3: Adding Edges
-//            System.out.println("\nFeature 3: Adding Edges");
-//            boolean edgeAdded1 = addEdge("a", "d");
-//            boolean edgeAdded2 = addEdge("e", "c");
-//            boolean edgeAdded3 = addEdge("f", "a");
-//            System.out.println("New edge(s) added\n");
-//            System.out.println(g.toString());
-//
-//            // Feature 4: Output the Imported Graph as DOT File and Graphics
-//            String outputDotFile = "graph_for_graphics.dot";
-//            System.out.println("\nFeature 4: Output the Imported Graph as DOT File");
-//            MutableGraph updatedGraph = outputDOTGraph(outputDotFile);
-//            System.out.println("DOT file created at: " + outputDotFile);
-//
-//            String dotFilePathForGraphics = "src/main/resources/graph_for_graphics.dot";
-//            System.out.println("\nFeature 4: Output the Imported Graph as Graphics");
-//            String graphicsGenerated = outputGraphics(dotFilePathForGraphics);
-//            System.out.println("Graph graphics generated at : " + graphicsGenerated);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 }
