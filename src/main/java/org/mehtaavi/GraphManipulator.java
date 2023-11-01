@@ -185,4 +185,52 @@ public class GraphManipulator {
         return g != null;
     }
 
+    public record Path(String path) {
+    }
+
+    public Path graphSearch(String srcLabel, String dstLabel) {
+        if (g != null) {
+            Stack<String> stack = new Stack<>();
+            Set<String> visited = new HashSet<>();
+            Map<String, String> parentMap = new HashMap<>();
+
+            stack.push(srcLabel);
+            visited.add(srcLabel);
+            parentMap.put(srcLabel, null);
+
+            while (!stack.isEmpty()) {
+                String currentLabel = stack.pop();
+
+                if (currentLabel.equals(dstLabel)) {
+                    // Found a path
+                    StringBuilder pathBuilder = new StringBuilder();
+                    String currentNode = dstLabel;
+                    while (currentNode != null) {
+                        pathBuilder.insert(0, currentNode);
+                        currentNode = parentMap.get(currentNode);
+                        if (currentNode != null) {
+                            pathBuilder.insert(0, " -> ");
+                        }
+                    }
+                    return new Path(pathBuilder.toString());
+                }
+
+                for (Link edge : g.edges()) {
+                    assert edge.from() != null;
+
+                    String fromNode = edge.from().toString().substring(0, edge.from().toString().indexOf("{"));
+                    String toNode = edge.to().toString().replace(":", "");
+
+                    if (fromNode.equals(currentLabel) && !visited.contains(toNode)) {
+                        stack.push(toNode);
+                        visited.add(toNode);
+                        parentMap.put(toNode, currentLabel);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
 }
