@@ -48,7 +48,7 @@ public class GraphManipulator {
             for (Link edge : g.edges()) {
                 assert edge.from() != null;
                 String ef = edge.from().toString();
-                String tempEdge = ef.substring(0, ef.indexOf("{")) + " -> " + ef.substring(ef.indexOf(">")+1, ef.indexOf(":"));
+                String tempEdge = ef.substring(0, ef.indexOf("{")) + "->" + ef.substring(ef.indexOf(">")+1, ef.indexOf(":"));
                 edgeSet.add(tempEdge);
             }
         }

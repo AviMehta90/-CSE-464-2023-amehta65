@@ -35,7 +35,7 @@ class GraphManipulatorTest {
                 Number of Nodes: 3
                 Nodes: [a, b, c]
                 Number of Edges: 3
-                Edges: [b -> c, c -> a, a -> b]""";
+                Edges: [c->a, a->b, b->c]""";
         assertEquals(expected, gM.toGraphString());
     }
 
@@ -81,15 +81,24 @@ class GraphManipulatorTest {
 
     @Test
     void testRemoveNode() {
+        System.out.println(gM.toGraphString());
+        System.out.println("Adding node d");
         gM.addNode("d");
+        System.out.println(gM.toGraphString());
         assertTrue(gM.removeNode("d"));
+        System.out.println(gM.toGraphString());
         assertFalse(gM.removeNode("z"));
     }
 
     @Test
     void testRemoveNodes() {
+        System.out.println("Adding nodes e, f");
         gM.addNodes(new String[]{"e", "f"});
+        System.out.println(gM.toGraphString());
+        System.out.println("Removing nodes: e, f");
         assertTrue(gM.removeNodes(new String[]{"e", "f"}));
+        System.out.println(gM.toGraphString());
+        System.out.println("Removing non-existent nodes: x, y");
         assertFalse(gM.removeNodes(new String[]{"x", "y"}));
     }
 
@@ -97,7 +106,10 @@ class GraphManipulatorTest {
     void testRemoveEdge() {
         gM.addEdge("a", "d");
         assertTrue(gM.addEdge("e", "b"));
+        System.out.println(gM.toGraphString());
         assertTrue(gM.removeEdge("e", "b"));
+        System.out.println(gM.toGraphString());
+        System.out.println("Removing non-existent edge: m -> n");
         assertFalse(gM.removeEdge("m", "n"));
     }
 
@@ -110,6 +122,7 @@ class GraphManipulatorTest {
         gM.addEdge("f", "a");
 
         GraphManipulator.Path path1 = gM.graphSearch("a", "c", GraphManipulator.Algorithm.DFS);
+        System.out.println("Performing DFS");
         System.out.println(path1);
         assertNotNull(path1);
         assertEquals("a -> b -> c", path1.path());
@@ -119,6 +132,7 @@ class GraphManipulatorTest {
         assertNull(path2);
 
         GraphManipulator.Path path3 = gM.graphSearch("e", "b", GraphManipulator.Algorithm.BFS);
+        System.out.println("Performing BFS");
         System.out.println(path3);
         assertNotNull(path3);
         assertEquals("e -> c -> a -> b", path3.path());
