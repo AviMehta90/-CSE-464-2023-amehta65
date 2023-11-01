@@ -101,4 +101,32 @@ class GraphManipulatorTest {
         assertFalse(gM.removeEdge("m", "n"));
     }
 
+    @Test
+    void testGraphSearch() {
+        gM.addNode("d");
+        gM.addNodes(new String[]{"e", "f"});
+        gM.addEdge("a", "d");
+        gM.addEdge("e", "c");
+        gM.addEdge("f", "a");
+
+        GraphManipulator.Path path1 = gM.graphSearch("a", "c", GraphManipulator.Algorithm.DFS);
+        System.out.println(path1);
+        assertNotNull(path1);
+        assertEquals("a -> b -> c", path1.path());
+
+        GraphManipulator.Path path2 = gM.graphSearch("d", "a", GraphManipulator.Algorithm.DFS);
+        System.out.println(path2);
+        assertNull(path2);
+
+        GraphManipulator.Path path3 = gM.graphSearch("e", "b", GraphManipulator.Algorithm.BFS);
+        System.out.println(path3);
+        assertNotNull(path3);
+        assertEquals("e -> c -> a -> b", path3.path());
+
+        GraphManipulator.Path path4 = gM.graphSearch("a", "f", GraphManipulator.Algorithm.BFS);
+        System.out.println(path4);
+        assertNull(path4);
+    }
+
+
 }
