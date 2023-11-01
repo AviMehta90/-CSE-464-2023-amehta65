@@ -98,7 +98,24 @@ This function renders the imported graph as a DOT file and saves it with the spe
 
 Visualizes the graph as a PNG image. It takes a path to a DOT file as input, reads the graph from that file, and generates a PNG image file. The generated image will be located in the specified directory.
 
-These functions provide a wide range of functionalities for parsing, modifying, and visualizing DOT graphs. You can refer to the examples in the README to learn how to use these functions to work with graphs in your application.
+#### Feature 5: Part 2 Changes
+
+##### `removeNode(String label)`
+
+To remove a node, use the removeNode method and provide the label of the node you want to remove.
+
+##### `removeNodes(String[] label)`
+
+To remove multiple nodes, pass an array of strings and use the removeNodes method and provide the labels of the nodes you want to remove.
+
+##### `removeEdge(String srcLabel, String dstLabel)`
+
+To remove an edge, use the removeEdge method and provide the label of the source and destination nodes you want to remove.
+
+##### `graphSearch(srcNode, dstNode)`
+
+You can perform a graph search between two nodes using either a breadth-first or depth-first search algorithm. Use the graphSearch method with the desired search algorithm based on the enum in the main class.
+The path of the search algorithm will be stored in a class named Path which will output in the format "a -> b -> c"
 
 ### Running the Application
 
@@ -106,67 +123,177 @@ Now that you've built the project, you can run the `GraphManipulator` applicatio
 
 1. **Parsing a DOT File:**
 
-    - To parse a DOT graph file and display node and edge information, use the following code:
+- To parse a DOT graph file and display node and edge information, use the following code:
 
-      ```java
-      GraphManipulator manipulator = new GraphManipulator();
-      manipulator.parseGraph("path/to/your/graph.dot");
-      System.out.println(manipulator.toGraphString());
-      ```
-    -  **Console Output**
-      ![Feature 1 Console Output](src/main/resources/util-images/feature1.png)
+  ```java
+  GraphManipulator manipulator = new GraphManipulator();
+  manipulator.parseGraph("path/to/your/graph.dot");
+  System.out.println(manipulator.toGraphString());
+  ```
+-  **Console Output**
+  ![Feature 1 Console Output](src/main/resources/util-images/feature1.png)
 
 2. **Adding Nodes:**
 
-    - You can add nodes to the imported graph using the `addNode` method. If the label already exists, it won't be added again.
+- You can add nodes to the imported graph using the `addNode` method. If the label already exists, it won't be added again.
 
-      ```java
-      GraphManipulator manipulator = new GraphManipulator();
-      manipulator.parseGraph("path/to/your/graph.dot");
-      manipulator.addNode("NewNode");
-      ```
-       -  **Console Output**
-          ![Feature 2 Console Output](src/main/resources/util-images/feature2.png)
+  ```java
+  GraphManipulator manipulator = new GraphManipulator();
+  manipulator.parseGraph("path/to/your/graph.dot");
+  manipulator.addNode("NewNode");
+  ```
+-  **Console Output**
+   ![Feature 2 Console Output](src/main/resources/util-images/feature2.png)
       
 
 3. **Adding Edges:**
 
-    - To add edges between existing nodes in the graph, use the `addEdge` method. Provide the labels of the source and destination nodes.
+- To add edges between existing nodes in the graph, use the `addEdge` method. Provide the labels of the source and destination nodes.
 
-      ```java
-      GraphManipulator manipulator = new GraphManipulator();
-      manipulator.parseGraph("path/to/your/graph.dot");
-      manipulator.addEdge("Node1", "Node2");
-      ```
-       -  **Console Output**
-          ![Feature 3 Console Output](src/main/resources/util-images/feature3.png)
+  ```java
+  GraphManipulator manipulator = new GraphManipulator();
+  manipulator.parseGraph("path/to/your/graph.dot");
+  manipulator.addEdge("Node1", "Node2");
+  ```
+-  **Console Output**
+   ![Feature 3 Console Output](src/main/resources/util-images/feature3.png)
 
 4. **Output as DOT File:**
 
-    - You can output the imported graph as a DOT file with the following code. This will create a DOT file in the specified location.
+- You can output the imported graph as a DOT file with the following code. This will create a DOT file in the specified location.
 
-      ```java
-      GraphManipulator manipulator = new GraphManipulator();
-      manipulator.parseGraph("path/to/your/graph.dot");
-      manipulator.outputDOTGraph("output_graph.dot");
-      ```
+  ```java
+  GraphManipulator manipulator = new GraphManipulator();
+  manipulator.parseGraph("path/to/your/graph.dot");
+  manipulator.outputDOTGraph("output_graph.dot");
+  ```
 
 5. **Output as Graphics:**
 
-    - To visualize the graph as a PNG image, provide the path to the DOT file and specify the output file path.
+- To visualize the graph as a PNG image, provide the path to the DOT file and specify the output file path.
 
-      ```java
-      GraphManipulator manipulator = new GraphManipulator();
-      manipulator.outputGraphics("path/to/your/graph.dot");
-      ```
-       -  **Console Output**
-          ![Feature 4 Console Output](src/main/resources/util-images/feature4.png)
+  ```java
+  GraphManipulator manipulator = new GraphManipulator();
+  manipulator.outputGraphics("path/to/your/graph.dot");
+  ```
+-  **Console Output**
+   ![Feature 4 Console Output](src/main/resources/util-images/feature4.png)
+
+6. **Remove Node(s):**
+
+- To check node(s) removal functionality.
+  ```java
+     GraphManipulator manipulator = new GraphManipulator();
+     manipulator.parseGraph("path/to/your/graph.dot");
+     manipulator.addNode("Node1");
+     manipulator.addNodes(String[]{"Node2", "Node3"});  
+     manipulator.removeNode("Node1");
+     manipulator.removeNode("NonexistentNode");
+     manipulator.removeNodes(String[]{"Node2", "Node3"});
+     manipulator.removeNodes(String[]{"NonExNode2", "NonExNode3"});
+     ```
+- **Console Output Remove Node(Test Case)**
+![remove-node1.png](src%2Fmain%2Fresources%2Futil-images%2Fremove-node1.png)
+- **Console Output Remove Nodes(Test Case)**
+![remove-node1.png](src%2Fmain%2Fresources%2Futil-images%2Fremove-nodes1.png)
+
+7. **Remove Edge:**
+
+- To check remove edge functionality.
+   ```java
+     GraphManipulator manipulator = new GraphManipulator();
+     manipulator.parseGraph("path/to/your/graph.dot");
+     manipulator.addNode("Node1");
+     manipulator.addEdge(String[]{"Node1", "Node2"});
+     manipulator.removeEdge(String[]{"Node1", "Node2"});
+     manipulator.removeEdge(String[]{"NonExNode2", "NonExNode3"});
+     ```
+- **Console Output Remove Edge(Test Case)**
+![remove-edge.png](src%2Fmain%2Fresources%2Futil-images%2Fremove-edge.png)
+
+8. **Creating maven.yml for native CI/CD on github (under actions tab in the repository)**
+![maven-workflow-github.png](src%2Fmain%2Fresources%2Futil-images%2Fmaven-workflow-github.png)
+![CICD1.png](src%2Fmain%2Fresources%2Futil-images%2FCICD1.png)
+![CICD2.png](src%2Fmain%2Fresources%2Futil-images%2FCICD2.png)
+
+9. **Creating branches and Merging Conflicts:**
+- Creating bfs and dfs branch and merging with main branch
+```zsh
+git checkout -b bfs
+```
+Do the changes in bfs branch and type the following command:
+```zsh
+git add .
+git commit -m "Added BFS Search Algorithm"
+git push origin bfs
+```
+Go back to main branch
+```zsh
+git checkout main
+```
+Create dfs branch
+```zsh
+git checkout -b dfs
+```
+Do the changes in dfs branch and type the following command:
+```zsh
+git add .
+git commit -m "Added DFS Search Algorithm"
+git push origin dfs
+```
+Now merge the dfs and bfs with main branch by checking in individual branches
+```zsh
+git checkout main
+git merge bfs
+git merge dfs
+```
+Merge conflicts and then commit and push to main origin
+```zsh
+git add .
+git commit -m "Resolved merge conflicts and added algorithm selection in graphSearch"
+```
+
+![merge-conflicts2.png](src%2Fmain%2Fresources%2Futil-images%2Fmerge-conflicts2.png)
+
+10. **Graph Search(BFS):**
+
+- Checking the BFS search algorithm.
+    ```java
+    GraphManipulator gM = new GraphManipulator();
+    gM.addNode("d");
+    gM.addNodes(new String[]{"e", "f"});
+    gM.addEdge("a", "d");
+    gM.addEdge("e", "c");
+    gM.addEdge("f", "a");
+    GraphManipulator.Path path1 = gM.graphSearch("a", "c", GraphManipulator.Algorithm.BFS);
+    System.out.println("Performing BFS");
+    System.out.println(path1);
+    ```
+
+11. **Graph Search(DFS):**
+
+- Checking the DFS search algorithm.
+    ```java
+    GraphManipulator gM = new GraphManipulator();
+    gM.addNode("d");
+    gM.addNodes(new String[]{"e", "f"});
+    gM.addEdge("a", "d");
+    gM.addEdge("e", "c");
+    gM.addEdge("f", "a");
+    GraphManipulator.Path path1 = gM.graphSearch("a", "c", GraphManipulator.Algorithm.DFS);
+    System.out.println("Performing DFS");
+    System.out.println(path1);
+    ```
+
+- **Console Output Graph Search(Test Case)**
+![graphsearch.png](src%2Fmain%2Fresources%2Futil-images%2Fgraphsearch.png)
 
 ### Project Structure
 
 The project's source code is organized as follows:
 
 - `src/main/java/org/mehtaavi`: Contains the Java source code.
+- `src/test/java/org/mehtaavi`: Contains the Java test code.
 - `src/main/resources`: Place your DOT files here and specify the output directory for graphics.
 
 ### Commit Links
@@ -178,4 +305,13 @@ The project's source code is organized as follows:
 6. [Deleted 'example' directory](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/e68cced851dc420aab9b1c585ead665c24f2ced0)
 7. [code formatted](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/7fae8289b50194dfa9a8f63cf4f826aa6782ca26)
 8. [Final Upload](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/3fc60dcaeb8540cd3af3533acb8b13d656fb7793)
+9. [Added 3 APIs to support node and edge removal with test unit](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/cd83a508f804194163f999037492b87810ad59f6)
+10. [Create maven.yml](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/7fdd877fc33f0973fc688fb4bd3f5d59c1a63432)
+11. [Update maven.yml](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/e1cb262616d65c54393a7b81694d9b546e557f89)
+12. [Added BFS graph search API](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/f8f3126e7ae0e2a363079835d10a63160d0b3b2b)
+13. [Name corrected for BFS API graphsearch](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/8848415618f8097bb20b719436c74085f132c2be)
+14. [Implemented DFS graph search API](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/61d5e58474f25d47a2cefd140e30f097ef1d3cdb)
+15. [Conflicts merge](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/2d2a8f7978f75b7b100824c9c718d397590ad3b4)
+16. [Merged changes with enum and added test case](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/c7f68aa17750f623291a66b87a26933fb97f38a6)
+17. [Formatting changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/802957f83b2a6f669d7c00bf833fb5f39db88623)
 
