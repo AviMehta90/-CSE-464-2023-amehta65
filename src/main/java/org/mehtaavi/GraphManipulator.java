@@ -3,7 +3,6 @@ package org.mehtaavi;
 import guru.nidi.graphviz.engine.*;
 import guru.nidi.graphviz.model.*;
 import guru.nidi.graphviz.parse.Parser;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
@@ -112,6 +111,7 @@ public class GraphManipulator {
         return allRemoved;
     }
 
+
     public boolean addEdge(String srcLabel, String dstLabel) {
         String edgeKey = srcLabel + "->" + dstLabel;
         if (edgeSet.add(edgeKey)) {
@@ -123,7 +123,7 @@ public class GraphManipulator {
         return false;
     }
 
-    private @Nullable MutableNode findNode(String label) {
+    private MutableNode findNode(String label) {
         for (MutableNode node : g.nodes()) {
             if (node.name().toString().equals(label)) {
                 return node;
@@ -184,56 +184,5 @@ public class GraphManipulator {
         Graphviz.fromGraph(g).width(700).render(Format.PNG).toFile(new File(pref+"new_graphPNG.png"));
         return g != null;
     }
-
-
-    public record Path(String path) {
-    }
-
-    public Path graphSearch(String srcLabel, String dstLabel) {
-
-        if (g != null) {
-            Queue<String> queue = new LinkedList<>();
-            Set<String> visited = new HashSet<>();
-            Map<String, String> parentMap = new HashMap<>();
-
-            queue.add(srcLabel);
-            visited.add(srcLabel);
-            parentMap.put(srcLabel, null);
-
-            while (!queue.isEmpty()) {
-                String currentLabel = queue.poll();
-
-                if (currentLabel.equals(dstLabel)) {
-
-                    StringBuilder pathBuilder = new StringBuilder();
-                    String currentNode = dstLabel;
-                    while (currentNode != null) {
-                        pathBuilder.insert(0, currentNode);
-                        currentNode = parentMap.get(currentNode);
-                        if (currentNode != null) {
-                            pathBuilder.insert(0, " -> ");
-                        }
-                    }
-                    return new Path(pathBuilder.toString());
-                }
-
-                for (Link edge : g.edges()) {
-                    assert edge.from() != null;
-
-                    String fromNode = edge.from().toString().substring(0, edge.from().toString().indexOf("{"));
-                    String toNode = edge.to().toString().replace(":","");
-
-                    if (fromNode.equals(currentLabel) && !visited.contains(toNode)) {
-                        queue.add(toNode);
-                        visited.add(toNode);
-                        parentMap.put(toNode, currentLabel);
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
 
 }
