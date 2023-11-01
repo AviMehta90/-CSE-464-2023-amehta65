@@ -109,18 +109,18 @@ class GraphManipulatorTest {
         gM.addEdge("e", "c");
         gM.addEdge("f", "a");
 
-        GraphManipulator.Path path1 = gM.graphSearchBFS("a", "c");
+        GraphManipulator.Path path1 = gM.graphSearch("a", "c");
         assertNotNull(path1);
         assertEquals("a -> b -> c", path1.path());
 
-        GraphManipulator.Path path2 = gM.graphSearchBFS("d", "a");
+        GraphManipulator.Path path2 = gM.graphSearch("d", "a");
         assertNull(path2);
 
-        GraphManipulator.Path path3 = gM.graphSearchBFS("e", "b");
+        GraphManipulator.Path path3 = gM.graphSearch("e", "b");
         assertNotNull(path3);
         assertEquals("e -> c -> a -> b", path3.path());
 
-        GraphManipulator.Path path4 = gM.graphSearchBFS("a", "f");
+        GraphManipulator.Path path4 = gM.graphSearch("a", "f");
         assertNull(path4);
     }
 

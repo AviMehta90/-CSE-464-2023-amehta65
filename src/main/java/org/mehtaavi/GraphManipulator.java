@@ -189,7 +189,7 @@ public class GraphManipulator {
     public record Path(String path) {
     }
 
-    public Path graphSearchBFS(String srcLabel, String dstLabel) {
+    public Path graphSearch(String srcLabel, String dstLabel) {
 
         if (g != null) {
             Queue<String> queue = new LinkedList<>();
