@@ -182,7 +182,7 @@ public class GraphManipulator {
         String pref = "src/main/resources/";
         InputStream dot = new FileInputStream(filePath);
         g = new Parser().read(dot);
-        Graphviz.fromGraph(g).width(700).render(Format.PNG).toFile(new File(pref+"new_graphPNG.png"));
+        Graphviz.fromGraph(g).width(700).render(Format.PNG).toFile(new File(pref+"new_graph_image.png"));
         return g != null;
     }
 
