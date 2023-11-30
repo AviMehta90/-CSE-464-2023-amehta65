@@ -40,8 +40,6 @@ public abstract class GraphSearchAlgorithm {
 
     protected abstract String getNextNode(LinkedList<String> qs);
 
-//    protected abstract void processNeighbors(String currentLabel, LinkedList<String> qs);
-
     protected void initialize(String srcLabel) {
         visited.clear();
         parentMap.clear();
