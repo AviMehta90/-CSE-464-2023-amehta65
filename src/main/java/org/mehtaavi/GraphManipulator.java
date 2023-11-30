@@ -13,6 +13,8 @@ import static guru.nidi.graphviz.model.Factory.mutNode;
 
 public class GraphManipulator {
 
+    private static final String EDGE_DELIMITER = "->";
+    private static final String PATH_PREFIX = "src/main/resources/";
     private MutableGraph g;
     Set<String> nodeSet = new HashSet<>();
     Set<String> edgeSet = new HashSet<>();
@@ -35,9 +37,7 @@ public class GraphManipulator {
     public Set<String> getNodeLabels() {
         if (g != null){
             for (MutableNode node: g.nodes()){
-                String name = node.toString();
-                String nodeName = name.substring(0, name.indexOf("{"));
-                nodeSet.add(nodeName);
+                nodeSet.add(node.toString().substring(0, node.toString().indexOf("{")));
             }
         }
         return nodeSet;
@@ -48,7 +48,7 @@ public class GraphManipulator {
             for (Link edge : g.edges()) {
                 assert edge.from() != null;
                 String ef = edge.from().toString();
-                String tempEdge = ef.substring(0, ef.indexOf("{")) + "->" + ef.substring(ef.indexOf(">")+1, ef.indexOf(":"));
+                String tempEdge = ef.substring(0, ef.indexOf("{")) + EDGE_DELIMITER + ef.substring(ef.indexOf(">")+1, ef.indexOf(":"));
                 edgeSet.add(tempEdge);
             }
         }
@@ -82,16 +82,6 @@ public class GraphManipulator {
         return false;
     }
 
-    public boolean addNodes(String[] labels) {
-        boolean allAdded = true;
-        for (String label : labels) {
-            if (!addNode(label)) {
-                allAdded = false;
-            }
-        }
-        return allAdded;
-    }
-
     public boolean removeNode(String label) {
         if (nodeSet.remove(label)) {
             g.nodes().remove(mutNode(label));
@@ -102,19 +92,34 @@ public class GraphManipulator {
         return false;
     }
 
+    public boolean addNodes(String[] labels) {
+        return modifyNodes(labels, true);
+    }
+
     public boolean removeNodes(String[] labels) {
-        boolean allRemoved = true;
+        return modifyNodes(labels, false);
+    }
+
+    private boolean modifyNodes(String[] labels, boolean isAdd) {
+        boolean allModified = true;
         for (String label : labels) {
-            if (!removeNode(label)) {
-                allRemoved = false;
+            if (isAdd) {
+                if (!addNode(label)) {
+                    allModified = false;
+                }
+            } else {
+                if (!removeNode(label)) {
+                    allModified = false;
+                }
             }
         }
-        return allRemoved;
+        return allModified;
     }
 
 
     public boolean addEdge(String srcLabel, String dstLabel) {
-        String edgeKey = srcLabel + "->" + dstLabel;
+//        String edgeKey = srcLabel + EDGE_DELIMITER + dstLabel;
+        String edgeKey = String.format("%s%s%s", srcLabel, EDGE_DELIMITER, dstLabel);
         if (edgeSet.add(edgeKey)) {
             g.add(mutNode(srcLabel).addLink(dstLabel));
             System.out.println("Edge created: " + srcLabel + " -> " + dstLabel);
@@ -134,7 +139,7 @@ public class GraphManipulator {
     }
 
     public boolean removeEdge(String srcLabel, String dstLabel) {
-        String edgeKey = srcLabel + "->" + dstLabel;
+        String edgeKey = srcLabel + EDGE_DELIMITER + dstLabel;
         if (!edgeSet.remove(edgeKey)) {
             System.out.println("Edge " + srcLabel + " -> " + dstLabel + " not found.");
             return false;
@@ -166,23 +171,22 @@ public class GraphManipulator {
     // Feature 4: Output the imported graph into a DOT file or graphics
     public MutableGraph outputDOTGraph(String filename) throws Exception {
         try {
-            String pref = "src/main/resources/actualOutputs";
-            String filePath = pref + filename;
+//            String pref = ;
+            String filePath = PATH_PREFIX+"actualOutputs" + filename;
             Graphviz.fromGraph(g).render(Format.DOT).toFile(new File(filePath));
             InputStream dot = new FileInputStream(filePath);
             g = new Parser().read(dot);
         }
         catch (Exception e){
-            throw new Exception("DOT File not formed");
+            throw new Exception("Error creating DOT file: " + e.getMessage());
         }
         return g;
     }
 
     public boolean outputGraphics(String filePath) throws IOException {
-        String pref = "src/main/resources/";
         InputStream dot = new FileInputStream(filePath);
         g = new Parser().read(dot);
-        Graphviz.fromGraph(g).width(700).render(Format.PNG).toFile(new File(pref+"new_graph_image.png"));
+        Graphviz.fromGraph(g).width(700).render(Format.PNG).toFile(new File(PATH_PREFIX+"new_graph_image.png"));
         return g != null;
     }
 
@@ -206,7 +210,6 @@ public class GraphManipulator {
     @Nullable
     private GraphManipulator.Path getPath(String dstLabel, Map<String, String> parentMap, String currentLabel) {
         if (currentLabel.equals(dstLabel)) {
-
             StringBuilder pathBuilder = new StringBuilder();
             String currentNode = dstLabel;
             while (currentNode != null) {
@@ -287,7 +290,6 @@ public class GraphManipulator {
                 }
             }
         }
-
         return null;
     }
 
