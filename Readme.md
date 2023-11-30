@@ -428,6 +428,6 @@ The project's source code is organized as follows:
 15. [Conflicts merge](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/2d2a8f7978f75b7b100824c9c718d397590ad3b4)
 16. [Merged changes with enum and added test case](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/c7f68aa17750f623291a66b87a26933fb97f38a6)
 17. [Formatting changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/802957f83b2a6f669d7c00bf833fb5f39db88623)
-18. [Refactoring changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/pull/1/commits/9760a1abf7a21e8b480a819316ae1aebf8eba3b3)
-19. [Template Pattern](https://github.com/AviMehta90/CSE-464-2023-amehta65/pull/1/commits/a0d26cbcb1e9c4a161f68d68a46d4189c4f190b2)
+18. [Refactoring changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/9760a1abf7a21e8b480a819316ae1aebf8eba3b3)
+19. [Template Pattern](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/f16cf82450c1ceff33712cf949d31789204c6184)
 20. [Strategy Pattern](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/a4292a017912de3795dd5681cdc6700660e4cd9d)
