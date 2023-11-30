@@ -288,6 +288,66 @@ git commit -m "Resolved merge conflicts and added algorithm selection in graphSe
 - **Console Output Graph Search(Test Case)**
 ![graphsearch.png](src%2Fmain%2Fresources%2Futil-images%2Fgraphsearch.png)
 
+
+Certainly, here are the refactoring changes made in the new Java code:
+
+### Refactoring Changes:
+
+1. **Filename change**
+    - **File Changes** `new_graph_image.png`
+    - **Reason:** Snake Casing for better readability
+
+2. **Instantiated Global String Variables**
+    - **Variables Added** `EDGE_DELIMITER = "->"` and `PATH_PREFIX = "src/main/resources/"`
+    - **Reason:** Accessible to all parts of the program. The intent is to protect data from being changed.
+
+3. **Error Handling**
+    - **Changes Made:** Error message in outputDOTGraph changed to `"Error creating DOT file: " + e.getMessage()`
+    - **Reason:** Easy Identification of Program Code and Error-Handling Code.
+
+4. **Extracted Method:**
+    - **Method Renamed:** `modifyNodes` Method added
+    - **Reason:** Added to check whether adding or deleting node in a single method making the original methods less complex and readable.
+
+5. **String Format**
+    - **Changes Made:** `String.format("%s%s%s", srcLabel, EDGE_DELIMITER, dstLabel);`
+    - **Reason:** The format string provides a clear template for the resulting string, making it easier to understand the structure. The String.format method supports localization by allowing you to specify different format patterns based on the locale.
+
+### Code Pattern Changes
+
+This branch of the project introduces a refactoring of the `GraphManipulator` class by applying the template pattern. The goal is to abstract common steps in the BFS (Breadth-First Search) and DFS (Depth-First Search) algorithms and provide a more modular and maintainable solution.
+
+#### Changes Made
+
+1. **Base Class - GraphSearchAlgorithm:**
+    - Created a new base class `GraphSearchAlgorithm` to define the common steps for both BFS and DFS.
+    - Moved the common initialization, path retrieval, and overall search structure to this base class.
+
+2. **Subclasses - BFSAlgorithm and DFSAlgorithm:**
+    - Created two subclasses, `BFSAlgorithm` and `DFSAlgorithm`, that extend `GraphSearchAlgorithm`.
+    - Implemented algorithm-specific steps such as retrieving the next node and processing neighbors.
+
+3. **Refactoring in GraphManipulator:**
+    - Updated the `GraphManipulator` class to use the new template pattern.
+    - The `graphSearch` method now creates an instance of the appropriate algorithm based on the selected type (BFS or DFS).
+
+## Usage
+
+1. **BFS Search:**
+   ```java
+   GraphManipulator graphManipulator = new GraphManipulator();
+   GraphManipulator.Path path = graphManipulator.graphSearch("sourceLabel", "destinationLabel", GraphSearchAlgorithm.Algorithm.BFS);
+   ```
+
+2. **DFS Search:**
+   ```java
+   GraphManipulator graphManipulator = new GraphManipulator();
+   GraphManipulator.Path path = graphManipulator.graphSearch("sourceLabel", "destinationLabel", GraphSearchAlgorithm.Algorithm.DFS);
+   ```
+
+
+
+
 ### Project Structure
 
 The project's source code is organized as follows:
@@ -314,4 +374,5 @@ The project's source code is organized as follows:
 15. [Conflicts merge](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/2d2a8f7978f75b7b100824c9c718d397590ad3b4)
 16. [Merged changes with enum and added test case](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/c7f68aa17750f623291a66b87a26933fb97f38a6)
 17. [Formatting changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/802957f83b2a6f669d7c00bf833fb5f39db88623)
-
+18. [Refactoring changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/pull/1/commits/9760a1abf7a21e8b480a819316ae1aebf8eba3b3)
+19. [Template Pattern](https://github.com/AviMehta90/CSE-464-2023-amehta65/pull/1/commits/a0d26cbcb1e9c4a161f68d68a46d4189c4f190b2)

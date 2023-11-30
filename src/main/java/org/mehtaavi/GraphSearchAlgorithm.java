@@ -31,10 +31,8 @@ public abstract class GraphSearchAlgorithm {
             if (pathBuilder != null) {
                 return pathBuilder;
             }
-
             processNeighbors(currentLabel, qs);
         }
-
         return null;
     }
 
