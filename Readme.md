@@ -323,6 +323,7 @@ This branch of the project introduces a refactoring of the `GraphManipulator` cl
 2. **Subclasses - BFSAlgorithm and DFSAlgorithm:**
     - Created two subclasses, `BFSAlgorithm` and `DFSAlgorithm`, that extend `GraphSearchAlgorithm`.
     - Implemented algorithm-specific steps such as retrieving the next node and processing neighbors.
+    - Implemented a single linked list structure for both the classes. The difference stands in the handling of neighbours where in BFS th behaviour of the linkedlist is queue and in DFS it is a stack.
 
 3. **Refactoring in GraphManipulator:**
     - Updated the `GraphManipulator` class to use the new template pattern.
