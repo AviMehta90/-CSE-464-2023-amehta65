@@ -310,7 +310,10 @@ git commit -m "Resolved merge conflicts and added algorithm selection in graphSe
     - **Changes Made:** `String.format("%s%s%s", srcLabel, EDGE_DELIMITER, dstLabel);`
     - **Reason:** The format string provides a clear template for the resulting string, making it easier to understand the structure. The String.format method supports localization by allowing you to specify different format patterns based on the locale.
 
-### Code Pattern Changes
+
+## Code Patterns
+
+### Template Pattern
 
 This branch of the project introduces a refactoring of the `GraphManipulator` class by applying the template pattern. The goal is to abstract common steps in the BFS (Breadth-First Search) and DFS (Depth-First Search) algorithms and provide a more modular and maintainable solution.
 
@@ -344,6 +347,59 @@ This branch of the project introduces a refactoring of the `GraphManipulator` cl
    ```
 
 
+### Strategy Pattern
+
+#### Strategy Interface (`GraphSearchStrategy`)
+
+- **Purpose**: To define a common interface for all graph search strategies.
+- **Methods**: Declares the method `graphSearch(String srcLabel, String dstLabel)`.
+- **Usage**: Implemented by `BFSAlgorithm` and `DFSAlgorithm`.
+
+#### Concrete Strategies (`BFSAlgorithm` and `DFSAlgorithm`)
+
+- **BFSAlgorithm**:
+    - **Inherits**: `GraphSearchAlgorithm`.
+    - **Implements**: `GraphSearchStrategy`.
+    - **Behavior**: Implements the BFS algorithm for graph searching.
+    - **Method**: `graphSearch` overridden to provide BFS specific logic.
+
+- **DFSAlgorithm**:
+    - **Inherits**: `GraphSearchAlgorithm`.
+    - **Implements**: `GraphSearchStrategy`.
+    - **Behavior**: Implements the DFS algorithm for graph searching.
+    - **Method**: `graphSearch` overridden to provide DFS specific logic.
+
+#### Context Class (`GraphManipulator`)
+
+- **Responsibility**: Manages the graph and delegates the search operation to the current strategy.
+- **Key Method**:
+    - `setSearchStrategy(GraphSearchStrategy strategy)`: Sets the current search strategy.
+    - `graphSearch(String srcLabel, String dstLabel)`: Delegates the search to the chosen strategy.
+
+#### Test Code
+
+- **Setting Strategy**: We can dynamically set the desired search strategy (BFS or DFS) using `setSearchStrategy`.
+- **Searching**: Once the strategy is set, calling `graphSearch` on `GraphManipulator` executes the search based on the selected strategy.
+
+#### Usage Example
+
+```java
+GraphManipulator manipulator = new GraphManipulator();
+
+// Setting BFS as the strategy
+manipulator.setSearchStrategy(new BFSAlgorithm(graph));
+Path bfsPath = manipulator.graphSearch("source", "destination");
+
+// Switching to DFS
+manipulator.setSearchStrategy(new DFSAlgorithm(graph));
+Path dfsPath = manipulator.graphSearch("source", "destination");
+```
+
+#### Advantages
+
+- **Flexibility**: Easily switch between different algorithms at runtime without modifying the core logic.
+- **Scalability**: New search strategies can be added without changing the existing codebase.
+- **Maintainability**: Each algorithm is encapsulated in its own class, making it easier to manage and modify.
 
 
 ### Project Structure
@@ -374,3 +430,4 @@ The project's source code is organized as follows:
 17. [Formatting changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/802957f83b2a6f669d7c00bf833fb5f39db88623)
 18. [Refactoring changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/pull/1/commits/9760a1abf7a21e8b480a819316ae1aebf8eba3b3)
 19. [Template Pattern](https://github.com/AviMehta90/CSE-464-2023-amehta65/pull/1/commits/a0d26cbcb1e9c4a161f68d68a46d4189c4f190b2)
+20. [Strategy Pattern](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/a4292a017912de3795dd5681cdc6700660e4cd9d)
