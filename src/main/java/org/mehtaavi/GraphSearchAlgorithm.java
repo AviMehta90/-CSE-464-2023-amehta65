@@ -17,12 +17,12 @@ public abstract class GraphSearchAlgorithm {
     }
 
     public GraphManipulator.Path graphSearch(String srcLabel, String dstLabel) {
-        LinkedList<String> queue = new LinkedList<>();
+        LinkedList<String> qs = new LinkedList<>();
         initialize(srcLabel);
-        queue.add(srcLabel);
+        qs.add(srcLabel);
 
-        while (!queue.isEmpty()) {
-            String currentLabel = getNextNode(queue);
+        while (!qs.isEmpty()) {
+            String currentLabel = getNextNode(qs);
             if (currentLabel == null) {
                 continue;
             }
@@ -32,7 +32,7 @@ public abstract class GraphSearchAlgorithm {
                 return pathBuilder;
             }
 
-            processNeighbors(currentLabel, queue);
+            processNeighbors(currentLabel, qs);
         }
 
         return null;
@@ -65,14 +65,14 @@ public abstract class GraphSearchAlgorithm {
         return null;
     }
 
-    protected void processNeighbors(String currentLabel, LinkedList<String> queue) {
+    protected void processNeighbors(String currentLabel, LinkedList<String> qs) {
         for (Link edge : graph.edges()) {
             assert edge.from() != null;
             String fromNode = edge.from().toString().substring(0, edge.from().toString().indexOf("{"));
             String toNode = edge.to().toString().replace(":", "");
 
             if (fromNode.equals(currentLabel) && !visited.contains(toNode)) {
-                queue.add(toNode);
+                qs.add(toNode);
                 visited.add(toNode);
                 parentMap.put(toNode, currentLabel);
             }
