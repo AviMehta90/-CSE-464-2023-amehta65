@@ -288,9 +288,6 @@ git commit -m "Resolved merge conflicts and added algorithm selection in graphSe
 - **Console Output Graph Search(Test Case)**
 ![graphsearch.png](src%2Fmain%2Fresources%2Futil-images%2Fgraphsearch.png)
 
-
-Certainly, here are the refactoring changes made in the new Java code:
-
 ### Refactoring Changes:
 
 1. **Filename change**
