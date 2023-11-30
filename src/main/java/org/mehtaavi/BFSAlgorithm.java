@@ -4,7 +4,7 @@ import guru.nidi.graphviz.model.*;
 
 import java.util.*;
 
-public class BFSAlgorithm extends GraphSearchAlgorithm {
+public class BFSAlgorithm extends GraphSearchAlgorithm implements GraphSearchStrategy{
     public BFSAlgorithm(MutableGraph graph) {
         super(graph);
     }

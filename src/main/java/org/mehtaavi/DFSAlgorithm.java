@@ -4,7 +4,7 @@ import guru.nidi.graphviz.model.*;
 
 import java.util.*;
 
-public class DFSAlgorithm extends GraphSearchAlgorithm {
+public class DFSAlgorithm extends GraphSearchAlgorithm implements GraphSearchStrategy{
     public DFSAlgorithm(MutableGraph graph) {
         super(graph);
     }

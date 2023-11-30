@@ -15,10 +15,14 @@ public class GraphManipulator {
     private static final String EDGE_DELIMITER = "->";
     private static final String PATH_PREFIX = "src/main/resources/";
     private MutableGraph g;
+    private GraphSearchStrategy searchStrategy;
     Set<String> nodeSet = new HashSet<>();
     Set<String> edgeSet = new HashSet<>();
     public GraphManipulator() {
         g = mutGraph("example").setDirected(true);
+    }
+    public void setSearchStrategy(GraphSearchStrategy strategy) {
+        this.searchStrategy = strategy;
     }
 
     // Feature 1: Parse a DOT graph file to create a graph
@@ -189,17 +193,22 @@ public class GraphManipulator {
         return g != null;
     }
 
-    public Path graphSearch(String srcLabel, String dstLabel, Algorithm algo) {
-        GraphSearchAlgorithm algorithm;
-        if (algo == Algorithm.BFS) {
-            algorithm = new BFSAlgorithm(g);
-        } else if (algo == Algorithm.DFS) {
-            algorithm = new DFSAlgorithm(g);
-        } else {
-            throw new IllegalArgumentException("Invalid search algorithm.");
-        }
-        return algorithm.graphSearch(srcLabel, dstLabel);
+//    public Path graphSearch(String srcLabel, String dstLabel, Algorithm algo) {
+//        GraphSearchAlgorithm algorithm;
+//        if (algo == Algorithm.BFS) {
+//            algorithm = new BFSAlgorithm(g);
+//        } else if (algo == Algorithm.DFS) {
+//            algorithm = new DFSAlgorithm(g);
+//        } else {
+//            throw new IllegalArgumentException("Invalid search algorithm.");
+//        }
+//        return algorithm.graphSearch(srcLabel, dstLabel);
+//    }
+
+    public Path graphSearch(String srcLabel, String dstLabel) {
+        return searchStrategy.graphSearch(srcLabel, dstLabel);
     }
+
 
     public enum Algorithm {
         BFS,
