@@ -8,6 +8,13 @@ public class DFSAlgorithm extends GraphSearchAlgorithm implements GraphSearchStr
     public DFSAlgorithm(MutableGraph graph) {
         super(graph);
     }
+
+    /**
+     * Retrieves the next node from the stack during DFS traversal.
+     *
+     * @param stack The stack containing the nodes to be explored.
+     * @return The next node to be processed in the DFS traversal.
+     */
     @Override
     protected String getNextNode(LinkedList<String> stack) {
         return stack.removeLast();

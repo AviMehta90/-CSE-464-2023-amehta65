@@ -127,11 +127,13 @@ class GraphManipulatorTest {
         gM.setSearchStrategy(new DFSAlgorithm(graph));
         System.out.println("Performing DFS");
         GraphManipulator.Path dfsPath = gM.graphSearch("a","c");
+        System.out.println(dfsPath.path());
         assertEquals("a -> b -> c", dfsPath.path());
 
         gM.setSearchStrategy(new BFSAlgorithm(graph));
         System.out.println("Performing BFS");
         GraphManipulator.Path bfsPath = gM.graphSearch("e", "b");
+        System.out.println(bfsPath.path());
         assertEquals("e -> c -> a -> b", bfsPath.path());
 
         MutableGraph test_graph = new Parser().read(new FileInputStream("src/main/resources/input2.dot"));
