@@ -288,6 +288,160 @@ git commit -m "Resolved merge conflicts and added algorithm selection in graphSe
 - **Console Output Graph Search(Test Case)**
 ![graphsearch.png](src%2Fmain%2Fresources%2Futil-images%2Fgraphsearch.png)
 
+### Refactoring Changes:
+
+1. **Filename change**
+    - **File Changes** `new_graph_image.png`
+    - **Reason:** Snake Casing for better readability
+
+2. **Instantiated Global String Variables**
+    - **Variables Added** `EDGE_DELIMITER = "->"` and `PATH_PREFIX = "src/main/resources/"`
+    - **Reason:** Accessible to all parts of the program. The intent is to protect data from being changed.
+
+3. **Error Handling**
+    - **Changes Made:** Error message in outputDOTGraph changed to `"Error creating DOT file: " + e.getMessage()`
+    - **Reason:** Easy Identification of Program Code and Error-Handling Code.
+
+4. **Extracted Method:**
+    - **Method Renamed:** `modifyNodes` Method added
+    - **Reason:** Added to check whether adding or deleting node in a single method making the original methods less complex and readable.
+
+5. **String Format**
+    - **Changes Made:** `String.format("%s%s%s", srcLabel, EDGE_DELIMITER, dstLabel);`
+    - **Reason:** The format string provides a clear template for the resulting string, making it easier to understand the structure. The String.format method supports localization by allowing you to specify different format patterns based on the locale.
+
+
+## Code Patterns
+
+### Template Pattern
+
+This branch of the project introduces a refactoring of the `GraphManipulator` class by applying the template pattern. The goal is to abstract common steps in the BFS (Breadth-First Search) and DFS (Depth-First Search) algorithms and provide a more modular and maintainable solution.
+
+#### Changes Made
+
+1. **Base Class - GraphSearchAlgorithm:**
+    - Created a new base class `GraphSearchAlgorithm` to define the common steps for both BFS and DFS.
+    - Moved the common initialization, path retrieval, and overall search structure to this base class.
+
+2. **Subclasses - BFSAlgorithm and DFSAlgorithm:**
+    - Created two subclasses, `BFSAlgorithm` and `DFSAlgorithm`, that extend `GraphSearchAlgorithm`.
+    - Implemented algorithm-specific steps such as retrieving the next node and processing neighbors.
+    - Implemented a single linked list structure for both the classes. The difference stands in the handling of neighbours where in BFS th behaviour of the linkedlist is queue and in DFS it is a stack.
+
+3. **Refactoring in GraphManipulator:**
+    - Updated the `GraphManipulator` class to use the new template pattern.
+    - The `graphSearch` method now creates an instance of the appropriate algorithm based on the selected type (BFS or DFS).
+
+## Usage
+
+1. **BFS Search:**
+   ```java
+   GraphManipulator graphManipulator = new GraphManipulator();
+   GraphManipulator.Path path = graphManipulator.graphSearch("sourceLabel", "destinationLabel", GraphSearchAlgorithm.Algorithm.BFS);
+   ```
+
+2. **DFS Search:**
+   ```java
+   GraphManipulator graphManipulator = new GraphManipulator();
+   GraphManipulator.Path path = graphManipulator.graphSearch("sourceLabel", "destinationLabel", GraphSearchAlgorithm.Algorithm.DFS);
+   ```
+
+
+### Strategy Pattern
+
+#### Strategy Interface (`GraphSearchStrategy`)
+
+- **Purpose**: To define a common interface for all graph search strategies.
+- **Methods**: Declares the method `graphSearch(String srcLabel, String dstLabel)`.
+- **Usage**: Implemented by `BFSAlgorithm` and `DFSAlgorithm`.
+
+#### Concrete Strategies (`BFSAlgorithm` and `DFSAlgorithm`)
+
+- **BFSAlgorithm**:
+    - **Inherits**: `GraphSearchAlgorithm`.
+    - **Implements**: `GraphSearchStrategy`.
+    - **Behavior**: Implements the BFS algorithm for graph searching.
+    - **Method**: `graphSearch` overridden to provide BFS specific logic.
+
+- **DFSAlgorithm**:
+    - **Inherits**: `GraphSearchAlgorithm`.
+    - **Implements**: `GraphSearchStrategy`.
+    - **Behavior**: Implements the DFS algorithm for graph searching.
+    - **Method**: `graphSearch` overridden to provide DFS specific logic.
+
+#### Context Class (`GraphManipulator`)
+
+- **Responsibility**: Manages the graph and delegates the search operation to the current strategy.
+- **Key Method**:
+    - `setSearchStrategy(GraphSearchStrategy strategy)`: Sets the current search strategy.
+    - `graphSearch(String srcLabel, String dstLabel)`: Delegates the search to the chosen strategy.
+
+#### Test Code
+
+- **Setting Strategy**: We can dynamically set the desired search strategy (BFS or DFS) using `setSearchStrategy`.
+- **Searching**: Once the strategy is set, calling `graphSearch` on `GraphManipulator` executes the search based on the selected strategy.
+
+#### Usage Example
+
+```java
+GraphManipulator manipulator = new GraphManipulator();
+
+// Setting BFS as the strategy
+manipulator.setSearchStrategy(new BFSAlgorithm(graph));
+Path bfsPath = manipulator.graphSearch("source", "destination");
+
+// Switching to DFS
+manipulator.setSearchStrategy(new DFSAlgorithm(graph));
+Path dfsPath = manipulator.graphSearch("source", "destination");
+```
+
+#### Advantages
+
+- **Flexibility**: Easily switch between different algorithms at runtime without modifying the core logic.
+- **Scalability**: New search strategies can be added without changing the existing codebase.
+- **Maintainability**: Each algorithm is encapsulated in its own class, making it easier to manage and modify.
+
+---
+
+## Random Walk Search
+
+This feature introduces a Random Walk Search algorithm to explore paths in a graph. The Random Walk algorithm starts from a source node and randomly selects neighbors to traverse until the destination node is reached or a certain condition is met.
+
+### How to Use
+
+
+1. **Create an iterated method of the RandomWalkAlgorithm:**
+
+    ```java
+    public String randomWalkSearchProcess(String srcLabel, String dstLabel, int numIterations) {
+        StringBuilder result = new StringBuilder("random testing\n");
+
+        for (int i = 0; i < numIterations; i++) {
+            System.out.println("Iteration: "+ (i+1));
+            Path path = searchStrategy.graphSearch(srcLabel, dstLabel);
+            result.append("visiting iteration ").append(i + 1).append(" ").append(path).append("\n");
+        }
+
+        return result.toString();
+    }
+    ```
+
+2. **Run the Random Walk Search:**
+
+    ```java
+    MutableGraph test_graph = new Parser().read(new FileInputStream("src/main/resources/input2.dot"));
+    gM.setSearchStrategy(new RandomWalkAlgorithm(test_graph));
+    System.out.println("Performing Random Walk Search");
+    GraphManipulator.Path rwsPath = gM.graphSearch("a", "c");
+    System.out.println(rwsPath.toString());
+    ```
+
+Output:
+
+![rwsImplementation.png](src/main/resources/util-images/rwsImplementation.png)
+
+
+
 ### Project Structure
 
 The project's source code is organized as follows:
@@ -314,4 +468,7 @@ The project's source code is organized as follows:
 15. [Conflicts merge](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/2d2a8f7978f75b7b100824c9c718d397590ad3b4)
 16. [Merged changes with enum and added test case](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/c7f68aa17750f623291a66b87a26933fb97f38a6)
 17. [Formatting changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/802957f83b2a6f669d7c00bf833fb5f39db88623)
-
+18. [Refactoring changes](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/9760a1abf7a21e8b480a819316ae1aebf8eba3b3)
+19. [Template Pattern](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/f16cf82450c1ceff33712cf949d31789204c6184)
+20. [Strategy Pattern](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/a4292a017912de3795dd5681cdc6700660e4cd9d)
+21. [Random Walk Search Implementation](https://github.com/AviMehta90/CSE-464-2023-amehta65/commit/af5da61095cfa2d9fe8eb949b8211d923e4aba16)
