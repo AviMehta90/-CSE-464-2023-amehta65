@@ -115,6 +115,7 @@ class GraphManipulatorTest {
 
     @Test
     void testGraphSearch() throws IOException {
+
         gM.addNode("d");
         gM.addNodes(new String[]{"e", "f"});
         gM.addEdge("a", "d");
@@ -142,11 +143,11 @@ class GraphManipulatorTest {
     }
 
     @Test
-    void testRandomWalk() throws IOException{
+    void testRandomWalk() throws IOException {
         MutableGraph test_graph = new Parser().read(new FileInputStream("src/main/resources/input2.dot"));
         gM.setSearchStrategy(new RandomWalkAlgorithm(test_graph));
         System.out.println("Performing Random Walk Search");
-        String allSearches = gM.randomWalkSearchProcess("a", "c", 3);
+        String allSearches = gM.randomWalkSearchProcess("a", "c", 10);
         System.out.println(allSearches);
     }
 
