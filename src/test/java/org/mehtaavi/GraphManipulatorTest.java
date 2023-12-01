@@ -133,6 +133,21 @@ class GraphManipulatorTest {
         GraphManipulator.Path bfsPath = gM.graphSearch("e", "b");
         assertEquals("e -> c -> a -> b", bfsPath.path());
 
+        MutableGraph test_graph = new Parser().read(new FileInputStream("src/main/resources/input2.dot"));
+        gM.setSearchStrategy(new RandomWalkAlgorithm(test_graph));
+        System.out.println("Performing Random Walk Search");
+        GraphManipulator.Path rwsPath = gM.graphSearch("a", "c");
+        System.out.println(rwsPath.toString());
+
+    }
+
+    @Test
+    void testRandomWalk() throws IOException{
+        MutableGraph test_graph = new Parser().read(new FileInputStream("src/main/resources/input2.dot"));
+        gM.setSearchStrategy(new RandomWalkAlgorithm(test_graph));
+        System.out.println("Performing Random Walk Search");
+        String allSearches = gM.randomWalkSearchProcess("a", "c", 3);
+        System.out.println(allSearches);
     }
 
 }

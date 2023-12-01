@@ -25,7 +25,6 @@ public class GraphManipulator {
         this.searchStrategy = strategy;
     }
 
-    // Feature 1: Parse a DOT graph file to create a graph
     public void parseGraph(String filePath) {
         try {
             InputStream dot = new FileInputStream(filePath);
@@ -75,7 +74,6 @@ public class GraphManipulator {
         return toGraphString();
     }
 
-    // Feature 2: Adding nodes from the imported graph
     public boolean addNode(String label) {
         if (nodeSet.add(label)) {
             g.add(mutNode(label));
@@ -121,7 +119,6 @@ public class GraphManipulator {
 
 
     public boolean addEdge(String srcLabel, String dstLabel) {
-//        String edgeKey = srcLabel + EDGE_DELIMITER + dstLabel;
         String edgeKey = String.format("%s%s%s", srcLabel, EDGE_DELIMITER, dstLabel);
         if (edgeSet.add(edgeKey)) {
             g.add(mutNode(srcLabel).addLink(dstLabel));
@@ -170,11 +167,8 @@ public class GraphManipulator {
         }
     }
 
-
-    // Feature 4: Output the imported graph into a DOT file or graphics
     public MutableGraph outputDOTGraph(String filename) throws Exception {
         try {
-//            String pref = ;
             String filePath = PATH_PREFIX+"actualOutputs" + filename;
             Graphviz.fromGraph(g).render(Format.DOT).toFile(new File(filePath));
             InputStream dot = new FileInputStream(filePath);
@@ -193,28 +187,23 @@ public class GraphManipulator {
         return g != null;
     }
 
-//    public Path graphSearch(String srcLabel, String dstLabel, Algorithm algo) {
-//        GraphSearchAlgorithm algorithm;
-//        if (algo == Algorithm.BFS) {
-//            algorithm = new BFSAlgorithm(g);
-//        } else if (algo == Algorithm.DFS) {
-//            algorithm = new DFSAlgorithm(g);
-//        } else {
-//            throw new IllegalArgumentException("Invalid search algorithm.");
-//        }
-//        return algorithm.graphSearch(srcLabel, dstLabel);
-//    }
-
     public Path graphSearch(String srcLabel, String dstLabel) {
         return searchStrategy.graphSearch(srcLabel, dstLabel);
     }
 
-
-    public enum Algorithm {
-        BFS,
-        DFS
-    }
     public record Path(String path) {
+    }
+
+    public String randomWalkSearchProcess(String srcLabel, String dstLabel, int numIterations) {
+        StringBuilder result = new StringBuilder("random testing\n");
+
+        for (int i = 0; i < numIterations; i++) {
+            System.out.println("Iteration: "+ (i+1));
+            Path path = searchStrategy.graphSearch(srcLabel, dstLabel);
+            result.append("visiting iteration ").append(i + 1).append(" ").append(path).append("\n");
+        }
+
+        return result.toString();
     }
 
 }
