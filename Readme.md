@@ -394,6 +394,8 @@ Path bfsPath = manipulator.graphSearch("source", "destination");
 manipulator.setSearchStrategy(new DFSAlgorithm(graph));
 Path dfsPath = manipulator.graphSearch("source", "destination");
 ```
+#### Output
+![graphsearch.png](src%2Fmain%2Fresources%2Futil-images%2Fgraphsearch.png)
 
 #### Advantages
 
