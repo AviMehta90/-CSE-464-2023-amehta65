@@ -1,9 +1,8 @@
-package org.mehtaavi;
-
 import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.parse.Parser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mehtaavi.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
