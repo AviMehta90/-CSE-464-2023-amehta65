@@ -1,6 +1,6 @@
-# CSE 464 Project Part 1
+# Graph Manager
 
-This Maven project, named "CSE-464-2023-amehta65", is a graph manipulator project which allows you to manipulate and work with graphs in the DOT file format. It offers several features to parse, modify, and visualize graphs. Below are instructions and example code to run the Maven project.
+This Maven project, named "Graph Manager", is a graph manipulator project which allows you to manipulate and work with graphs in the DOT file format. It offers several features to parse, modify, and visualize graphs. Below are instructions and example code to run the Maven project.
 
 ### Prerequisites
 
