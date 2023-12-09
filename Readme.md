@@ -17,13 +17,13 @@ Follow these steps to get started with the Graph Manipulator project:
 1. **Clone the Repository (optional):** You can clone the project repository from [GitHub](https://github.com) or download the source code as a ZIP archive.
 
    ```bash
-   git clone https://github.com/AviMehta90/CSE-464-2023-amehta65.git
+   git clone https://github.com/AviMehta90/Graph-Manager.git
    ```
 
 2. **Navigate to the Project Directory:** Open a terminal or command prompt, and change your current directory to the project's root folder.
 
    ```bash
-   cd CSE-464-2023-amehta65
+   cd Graph-Manager
    ```
 
 3. **Compile and Build the Project:** Use Maven to compile and build the project. This command will download the required dependencies and create an executable JAR file.
